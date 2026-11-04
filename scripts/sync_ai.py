@@ -18,6 +18,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = "https://github.com/VPSDance/ai-proxy-rules"
 API = "https://api.github.com/repos/VPSDance/ai-proxy-rules/commits/main"
 MAX_FILE = 2_000_000
+# The MCP protocol is shared across providers, even though upstream lists it
+# in Anthropic Core. Do not give these hostnames provider identity priority.
+SHARED_PRIORITY_DOMAINS = {f"modelcontextprotocol.{tld}" for tld in ("com", "io", "net", "org")}
 
 
 def fetch(url: str, *, api: bool = False) -> bytes:
@@ -91,6 +94,9 @@ def stage_outputs(root: Path, sha: str, data: dict[str, bytes]) -> dict[Path, by
         if rule.startswith(("DOMAIN,", "DOMAIN-SUFFIX,"))
         and (rule in anthropic_core or any(token in rule.partition(",")[2].lower()
                                             for token in branded["Anthropic"]))
+        and not any(rule.partition(",")[2].lower() == domain or
+                    rule.partition(",")[2].lower().endswith("." + domain)
+                    for domain in SHARED_PRIORITY_DOMAINS)
     ))
     if not priority_domains:
         raise ValueError("Anthropic 优先域名列表为空")

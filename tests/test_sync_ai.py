@@ -10,7 +10,7 @@ from sync_ai import parse_source, stage_outputs, write_outputs
 
 
 OPENAI = b"# Core\nDOMAIN-SUFFIX,openai.com\nPROCESS-NAME,Codex\n# Network\nIP-CIDR,1.2.3.0/24,no-resolve\n# Third-Party\nDOMAIN-SUFFIX,sentry.io\n"
-ANTHROPIC = b"# Core\nDOMAIN-SUFFIX,claude.ai\nPROCESS-NAME,Claude\n# Third-Party\nDOMAIN-SUFFIX,sentry.io\nDOMAIN-SUFFIX,chatbotclaude.com\n"
+ANTHROPIC = b"# Core\nDOMAIN-SUFFIX,claude.ai\nDOMAIN-SUFFIX,modelcontextprotocol.io\nPROCESS-NAME,Claude\n# Third-Party\nDOMAIN-SUFFIX,sentry.io\nDOMAIN-SUFFIX,chatbotclaude.com\n"
 
 
 class SyncTests(unittest.TestCase):
@@ -34,6 +34,7 @@ class SyncTests(unittest.TestCase):
             self.assertIn("DOMAIN-SUFFIX,claude.ai", priority)
             self.assertIn("DOMAIN-SUFFIX,chatbotclaude.com", priority)
             self.assertNotIn("sentry.io", priority)
+            self.assertNotIn("modelcontextprotocol.io", priority)
             self.assertNotIn("PROCESS-NAME", priority)
             global_data = outputs[root / "rules/Global.list"].decode()
             self.assertNotIn("DOMAIN-SUFFIX,openai.com", global_data)

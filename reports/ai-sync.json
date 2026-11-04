@@ -75,8 +75,8 @@
   },
   "anthropic_domain_priority": {
     "path": "support/Anthropic-Domains.list",
-    "sha256": "6e84002929b4aefa346c2b038e725465f4a2173bca485448021d69b0865bf887",
-    "rules": 26
+    "sha256": "78398a631656ec06f86443af5151caf5152e7a995f8c2bef2d2fe299677b9716",
+    "rules": 22
   },
   "warning": "原样同步上游；第三方域名、关键词、进程与 IP 规则可能影响共享服务。OpenAI 与 Anthropic 列表存在重叠，按 Surge 规则顺序先匹配者生效。"
 }
