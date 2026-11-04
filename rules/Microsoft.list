@@ -1,5 +1,4 @@
 # Source: https://github.com/blackmatrix7/ios_rule_script
-# Branch: master
 # Commit: 0b6897dc17e0c513d25449c935a9694818e32f0c
 DOMAIN-SUFFIX,atom.io
 DOMAIN-SUFFIX,dependabot.com
@@ -770,7 +769,3 @@ IP-CIDR,24.199.123.28/32,no-resolve
 IP-CIDR,64.23.132.171/32,no-resolve
 IP-ASN,14061,no-resolve
 IP-ASN,20473,no-resolve
-IP-CIDR,24.199.123.28/32
-IP-CIDR,64.23.132.171/32
-IP-ASN,14061
-IP-ASN,20473
