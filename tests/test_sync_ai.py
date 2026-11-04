@@ -10,12 +10,12 @@ from sync_ai import parse_source, stage_outputs, write_outputs
 
 
 OPENAI = b"# Core\nDOMAIN-SUFFIX,openai.com\nPROCESS-NAME,Codex\n# Network\nIP-CIDR,1.2.3.0/24,no-resolve\n# Third-Party\nDOMAIN-SUFFIX,sentry.io\n"
-ANTHROPIC = b"# Core\nDOMAIN-SUFFIX,claude.ai\n# Third-Party\nDOMAIN-SUFFIX,sentry.io\nDOMAIN-SUFFIX,chatbotclaude.com\n"
+ANTHROPIC = b"# Core\nDOMAIN-SUFFIX,claude.ai\nPROCESS-NAME,Claude\n# Third-Party\nDOMAIN-SUFFIX,sentry.io\nDOMAIN-SUFFIX,chatbotclaude.com\n"
 
 
 class SyncTests(unittest.TestCase):
     def fixture(self, root):
-        for name in ("rules", "inputs", "config", "reports"):
+        for name in ("rules", "support", "inputs", "config", "reports"):
             (root / name).mkdir()
         base = b"# upstream\nDOMAIN-SUFFIX,openai.com\nDOMAIN,api.claude.ai\nDOMAIN-SUFFIX,chatbotclaude.com\nDOMAIN-SUFFIX,sentry.io\nDOMAIN-KEYWORD,openai\nIP-CIDR,1.2.3.0/24,no-resolve\nIP-CIDR,1.2.3.0/24\n"
         (root / "inputs/Global.unfiltered.list").write_bytes(base)
@@ -30,6 +30,11 @@ class SyncTests(unittest.TestCase):
             outputs = stage_outputs(root, "a" * 40, {"OpenAI": OPENAI, "Anthropic": ANTHROPIC})
             self.assertEqual(outputs[root / "rules/OpenAI.list"], OPENAI)
             self.assertEqual(outputs[root / "rules/Anthropic.list"], ANTHROPIC)
+            priority = outputs[root / "support/Anthropic-Domains.list"].decode()
+            self.assertIn("DOMAIN-SUFFIX,claude.ai", priority)
+            self.assertIn("DOMAIN-SUFFIX,chatbotclaude.com", priority)
+            self.assertNotIn("sentry.io", priority)
+            self.assertNotIn("PROCESS-NAME", priority)
             global_data = outputs[root / "rules/Global.list"].decode()
             self.assertNotIn("DOMAIN-SUFFIX,openai.com", global_data)
             self.assertNotIn("DOMAIN,api.claude.ai", global_data)
@@ -38,7 +43,7 @@ class SyncTests(unittest.TestCase):
             self.assertNotIn("DOMAIN-SUFFIX,chatbotclaude.com", global_data)
             self.assertNotIn("IP-CIDR,1.2.3.0/24,no-resolve", global_data)
             self.assertIn("IP-CIDR,1.2.3.0/24\n", global_data)
-            self.assertEqual(write_outputs(outputs), 5)
+            self.assertEqual(write_outputs(outputs), 6)
             self.assertEqual(write_outputs(outputs), 0)
             report = json.loads((root / "reports/ai-sync.json").read_text())
             self.assertEqual(report["shared_exact_rules"], ["DOMAIN-SUFFIX,sentry.io"])

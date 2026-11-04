@@ -83,6 +83,20 @@ def stage_outputs(root: Path, sha: str, data: dict[str, bytes]) -> dict[Path, by
         for rule in parsed[name][0]:
             if rule.startswith(("IP-CIDR,", "IP-CIDR6,", "IP-ASN,")):
                 networks.setdefault(rule, name)
+    # Only Anthropic identity domains are promoted ahead of the OpenAI list.
+    # PROCESS-NAME and generic shared third-party rules must stay in the full list.
+    anthropic_core = set(parsed["Anthropic"][1])
+    priority_domains = list(dict.fromkeys(
+        rule for rule in parsed["Anthropic"][0]
+        if rule.startswith(("DOMAIN,", "DOMAIN-SUFFIX,"))
+        and (rule in anthropic_core or any(token in rule.partition(",")[2].lower()
+                                            for token in branded["Anthropic"]))
+    ))
+    if not priority_domains:
+        raise ValueError("Anthropic 优先域名列表为空")
+    priority_bytes = (f"# Anthropic identity domains; VPSDance commit: {sha}\n"
+                      "# Shared third-party, process, keyword and IP rules are excluded.\n"
+                      + "\n".join(priority_domains) + "\n").encode("utf-8")
     removed = {"OpenAI": [], "Anthropic": [], "quarantine": []}
     global_lines = []
     for raw in baseline.decode("utf-8").splitlines(keepends=True):
@@ -99,6 +113,8 @@ def stage_outputs(root: Path, sha: str, data: dict[str, bytes]) -> dict[Path, by
                                  "sha256": hashlib.sha256(content).hexdigest(),
                                  "rules": len(parsed[name][0])} for name, content in data.items()},
                 "shared_exact_rules": shared, "global_removed": removed,
+                "anthropic_domain_priority": {"path": "support/Anthropic-Domains.list",
+                    "sha256": hashlib.sha256(priority_bytes).hexdigest(), "rules": len(priority_domains)},
                 "warning": "原样同步上游；第三方域名、关键词、进程与 IP 规则可能影响共享服务。OpenAI 与 Anthropic 列表存在重叠，按 Surge 规则顺序先匹配者生效。"}
     report_path = root / "reports" / "release-report.json"
     report = json.loads(report_path.read_text(encoding="utf-8"))
@@ -107,6 +123,7 @@ def stage_outputs(root: Path, sha: str, data: dict[str, bytes]) -> dict[Path, by
     for name, content in {**data, "Global": global_bytes}.items():
         report["sha256"][name + ".list"] = hashlib.sha256(content).hexdigest()
     return {root / "rules" / "OpenAI.list": data["OpenAI"], root / "rules" / "Anthropic.list": data["Anthropic"],
+            root / "support" / "Anthropic-Domains.list": priority_bytes,
             root / "rules" / "Global.list": global_bytes,
             root / "reports" / "ai-sync.json": (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode(),
             report_path: (json.dumps(report, ensure_ascii=False, indent=2) + "\n").encode()}
