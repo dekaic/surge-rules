@@ -1,6 +1,7 @@
 {
   "OpenAI": [
     "DOMAIN-SUFFIX,openai.com",
+    "DOMAIN-SUFFIX,openai.org",
     "DOMAIN-SUFFIX,chatgpt.com",
     "DOMAIN-SUFFIX,oaistatic.com",
     "DOMAIN-SUFFIX,oaiusercontent.com",
@@ -18,10 +19,13 @@
   ],
   "Anthropic": [
     "DOMAIN-SUFFIX,anthropic.com",
+    "DOMAIN-SUFFIX,anthropic.team",
     "DOMAIN-SUFFIX,claude.ai",
     "DOMAIN-SUFFIX,claude.com",
     "DOMAIN-SUFFIX,claude.app",
     "DOMAIN-SUFFIX,claude.dev",
+    "DOMAIN-SUFFIX,claude.new",
+    "DOMAIN-SUFFIX,claude.site",
     "DOMAIN-SUFFIX,claudeusercontent.com",
     "DOMAIN-SUFFIX,claudemcpcontent.com",
     "DOMAIN-SUFFIX,clau.de",

@@ -4,7 +4,9 @@
 
 **这是测试数据，并非完整或已经生产验证的规则。** 上游 README 的 Global 分类引用的 `RemoteDesktop`、`ChemeQuations`、`Zoom` 对应目录在该提交中缺失；`rules/Global.list` 明确标记为不完整。不要依赖这些列表实现安全控制或未经检查地替换现有配置。
 
-`rules/` 包含每个上游一级分类的一份聚合规则，以及独立的 `OpenAI.list`、`Anthropic.list`。`Global.list` 中明确归属上述两家的域名已转移到对应专用列表；三个过宽的品牌关键词已移除，未扩散到专用列表。名称相似但未确认归属的第三方域名保留在 Global。来源、移除规则及各文件 SHA-256 见 `reports/release-report.json`。
+`rules/` 包含每个上游一级分类的一份聚合规则，以及独立的 `OpenAI.list`、`Anthropic.list`。`Global.list` 中已识别的相关域名已转移到对应专用列表；三个过宽的品牌关键词已移除，未扩散到专用列表。其余名称相似、尚未归类的域名保留在 Global。来源、移除规则及各文件 SHA-256 见 `reports/release-report.json`。
+
+`openai.org`、`anthropic.team`、`claude.new`、`claude.site` 根据上游品牌域名条目单独分流，其注册主体未在此逐一核验；规则归类不构成官方网站或安全性的认证。
 
 上游每个目录的所有 `.list` 变体都参与聚合，包括 Resolve 和 No Resolve；分类之间可能重叠，规则顺序可能改变命中结果。上游 `Advertising` 分类还包含 `Direct` 目录，因此**不要直接将它整体绑定到 REJECT**。`URL-REGEX` 等规则受 Surge 的功能与运行设置约束。
 
