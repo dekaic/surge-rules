@@ -1,0 +1,32 @@
+{
+  "OpenAI": [
+    "DOMAIN-SUFFIX,openai.com",
+    "DOMAIN-SUFFIX,chatgpt.com",
+    "DOMAIN-SUFFIX,oaistatic.com",
+    "DOMAIN-SUFFIX,oaiusercontent.com",
+    "DOMAIN-SUFFIX,oaistatsig.com",
+    "DOMAIN-SUFFIX,chatgpt.livekit.cloud",
+    "DOMAIN,chat.com",
+    "DOMAIN,cdn.openaimerge.com",
+    "DOMAIN,chat.openai.com.cdn.cloudflare.net",
+    "DOMAIN,openai-api.arkoselabs.com",
+    "DOMAIN,openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net",
+    "DOMAIN,openaicomproductionae4b.blob.core.windows.net",
+    "DOMAIN,production-openaicom-storage.azureedge.net",
+    "DOMAIN,openaiapi-site.azureedge.net",
+    "DOMAIN,openaicom.imgix.net"
+  ],
+  "Anthropic": [
+    "DOMAIN-SUFFIX,anthropic.com",
+    "DOMAIN-SUFFIX,claude.ai",
+    "DOMAIN-SUFFIX,claude.com",
+    "DOMAIN-SUFFIX,claude.app",
+    "DOMAIN-SUFFIX,claude.dev",
+    "DOMAIN-SUFFIX,claudeusercontent.com",
+    "DOMAIN-SUFFIX,claudemcpcontent.com",
+    "DOMAIN-SUFFIX,clau.de",
+    "DOMAIN,http-intake.logs.us5.datadoghq.com",
+    "DOMAIN,browser-intake-us5-datadoghq.com",
+    "DOMAIN,servd-anthropic-website.b-cdn.net"
+  ]
+}

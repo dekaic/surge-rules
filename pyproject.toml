@@ -1,0 +1,6 @@
+[project]
+name = "ios-rule-aggregator"
+version = "0.1.0"
+description = "Local Surge rule category aggregator"
+requires-python = ">=3.12,<3.14"
+dependencies = []
