@@ -5290,7 +5290,6 @@ DOMAIN-SUFFIX,antiphishing.ru
 DOMAIN-SUFFIX,antiquity.ac.uk
 DOMAIN-SUFFIX,antislavery.ac.uk
 DOMAIN-SUFFIX,antislaverylaw.ac.uk
-DOMAIN-SUFFIX,antspace.dev
 DOMAIN-SUFFIX,anudetube.com
 DOMAIN-SUFFIX,anws.gov.tw
 DOMAIN-SUFFIX,anxiangxing.com
@@ -8270,7 +8269,6 @@ DOMAIN-SUFFIX,charteredcollegeofteaching.ac.uk
 DOMAIN-SUFFIX,chase.ac.uk
 DOMAIN-SUFFIX,chasestudy.ac.uk
 DOMAIN-SUFFIX,chatango.com
-DOMAIN-SUFFIX,chatbotclaude.com
 DOMAIN-SUFFIX,chatgptvideo.xyz
 DOMAIN-SUFFIX,chatgptvideob.buzz
 DOMAIN-SUFFIX,chatsex.xxx
@@ -8533,10 +8531,6 @@ DOMAIN-SUFFIX,clasporno.org
 DOMAIN-SUFFIX,classicnike.com
 DOMAIN-SUFFIX,classics.ac.uk
 DOMAIN-SUFFIX,classymomsex.com
-DOMAIN-SUFFIX,claudeacademy.com
-DOMAIN-SUFFIX,claudemcpclient.com
-DOMAIN-SUFFIX,claudepages.dev
-DOMAIN-SUFFIX,claudestudio.com
 DOMAIN-SUFFIX,clawhub.ai
 DOMAIN-SUFFIX,clc-london.ac.uk
 DOMAIN-SUFFIX,clck.ru
@@ -9034,7 +9028,6 @@ DOMAIN-SUFFIX,critical.ac.uk
 DOMAIN-SUFFIX,criticalfriend.ac.uk
 DOMAIN-SUFFIX,criticaltheology.ac.uk
 DOMAIN-SUFFIX,critiquebrainz.org
-DOMAIN-SUFFIX,crixet.com
 DOMAIN-SUFFIX,crocels.ac.uk
 DOMAIN-SUFFIX,crocoblock.com
 DOMAIN-SUFFIX,cromite.org
@@ -24155,7 +24148,6 @@ DOMAIN-SUFFIX,sonytc.co.jp
 DOMAIN-SUFFIX,soolakhi.com
 DOMAIN-SUFFIX,soooyinfor.lol
 DOMAIN-SUFFIX,soporn.com
-DOMAIN-SUFFIX,sora.com
 DOMAIN-SUFFIX,sora6.com
 DOMAIN-SUFFIX,sorairi.info
 DOMAIN-SUFFIX,sorcerersarena.com
@@ -30155,7 +30147,6 @@ DOMAIN-SUFFIX,chaoex.com
 DOMAIN-SUFFIX,chaos.social
 DOMAIN-SUFFIX,chapm25.com
 DOMAIN-SUFFIX,character.ai
-DOMAIN-SUFFIX,chatgpt.site
 DOMAIN-SUFFIX,chatnook.com
 DOMAIN-SUFFIX,chatpdf.com
 DOMAIN-SUFFIX,chaturbate.com
@@ -35962,7 +35953,6 @@ DOMAIN-SUFFIX,api.termius.com
 DOMAIN-SUFFIX,app.element.io
 DOMAIN-SUFFIX,app.heywire.com
 DOMAIN-SUFFIX,app.tutanota.com
-DOMAIN-SUFFIX,backend-v2.crixet.com
 DOMAIN-SUFFIX,bbs.kimy.com.tw
 DOMAIN-SUFFIX,bbs.qmzdd.com
 DOMAIN-SUFFIX,bitc.bme.emory.edu
@@ -44729,7 +44719,6 @@ DOMAIN-SUFFIX,ads.pubmatic.com
 DOMAIN-SUFFIX,arphic.com.cn
 DOMAIN,browser-intake-datadoghq.com
 DOMAIN,static.cloudflareinsights.com
-DOMAIN-SUFFIX,ai.com
 DOMAIN-SUFFIX,algolia.net
 DOMAIN-SUFFIX,api.statsig.com
 DOMAIN-SUFFIX,client-api.arkoselabs.com
@@ -44738,8 +44727,6 @@ DOMAIN-SUFFIX,featuregates.org
 DOMAIN-SUFFIX,launchdarkly.com
 DOMAIN-SUFFIX,observeit.net
 DOMAIN-SUFFIX,segment.io
-IP-CIDR,24.199.123.28/32,no-resolve
-IP-CIDR,64.23.132.171/32,no-resolve
 IP-ASN,20473,no-resolve
 IP-CIDR,24.199.123.28/32
 IP-CIDR,64.23.132.171/32
