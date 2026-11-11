@@ -5,6 +5,7 @@
 - 从 [blackmatrix7 Surge README](https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/Surge/README.md) 读取分类，每个来源目录选主 `.list`，分类内去重。
 - [OpenAI](https://github.com/VPSDance/ai-proxy-rules/blob/main/rules/surge/openai.list) 和 [Anthropic](https://github.com/VPSDance/ai-proxy-rules/blob/main/rules/surge/anthropic.list) 原样同步，不改内容。
 - 不生成 Media：IPTV 来源并入国内/海外媒体，通用 Tencent 留在 Mainland。国内媒体排除 ChinaMax，广告排除 Direct，Other 排除 LAN/直连例外。
+- Global 排除宽泛的 `DOMAIN-SUFFIX,aliyuncs.com`，保留单独列出的其他阿里云子域名规则。
 - 不做跨分类去重、AI 排除、发布打包、审计报告或辅助列表；分类优先级由客户端决定。
 
 ```bash

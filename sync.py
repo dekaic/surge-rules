@@ -117,6 +117,9 @@ def main():
     for name, dirs in groups.items():
         missing = [d for d in dirs if sources[d] is None]
         entries = list(dict.fromkeys(s for d in dirs for s in (sources[d] or [])))
+        # The broad Alibaba Cloud suffix would send domestic OSS traffic to Global.
+        if name == 'Global':
+            entries = [s for s in entries if s != 'DOMAIN-SUFFIX,aliyuncs.com']
         if not entries:
             raise ValueError('Empty category: ' + name)
         header = f'# Source: https://github.com/{BLACKMATRIX}\n# Commit: {bm_sha}\n'
