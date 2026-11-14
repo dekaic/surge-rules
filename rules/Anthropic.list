@@ -59,3 +59,6 @@ DOMAIN-SUFFIX,statsigapi.net
 DOMAIN-KEYWORD,datadog
 DOMAIN-KEYWORD,sentry
 DOMAIN-KEYWORD,sift
+
+# Local addition: Anthropic inbound IPv4
+IP-CIDR,153.61.224.0/22,no-resolve

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sync Surge category lists and the two original VPSDance AI lists. Standard library only."""
+"""Sync Surge category lists and VPSDance AI lists. Standard library only."""
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from urllib.error import HTTPError
@@ -92,6 +92,15 @@ def rules(data):
     return lines
 
 
+def add_anthropic_network(content):
+    rule = 'IP-CIDR,153.61.224.0/22,no-resolve'
+    if rule not in rules(content):
+        if not content.endswith(b'\n'):
+            content += b'\n'
+        content += b'\n# Local addition: Anthropic inbound IPv4\n' + rule.encode() + b'\n'
+    return content
+
+
 def main():
     bm_sha, ai_sha = commit(BLACKMATRIX, 'master'), commit(AI, 'main')
     groups = categories(raw(BLACKMATRIX, bm_sha, 'rule/Surge/README.md').decode())
@@ -129,7 +138,7 @@ def main():
     for name in ('OpenAI', 'Anthropic'):
         content = raw(AI, ai_sha, f'rules/surge/{name.lower()}.list')
         rules(content)
-        outputs[name + '.list'] = content  # Preserve upstream bytes, including comments.
+        outputs[name + '.list'] = add_anthropic_network(content) if name == 'Anthropic' else content
     # Only replace the directory after every download succeeds.
     dest = ROOT/'rules'
     with tempfile.TemporaryDirectory(prefix='.sync-', dir=ROOT) as td:
