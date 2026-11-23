@@ -23,13 +23,6 @@ PROCESS-NAME,Codex.exe
 PROCESS-NAME,chatgpt
 PROCESS-NAME,codex
 
-# Network
-IP-CIDR,199.47.142.0/23,no-resolve
-IP-CIDR,24.199.123.28/32,no-resolve
-IP-CIDR,64.23.132.171/32,no-resolve
-IP-CIDR6,2604:f20::/32,no-resolve
-IP-ASN,401518,no-resolve
-
 # Third-Party
 DOMAIN,browser-intake-datadoghq.com
 DOMAIN,openai-api.arkoselabs.com
@@ -55,7 +48,58 @@ DOMAIN-SUFFIX,observeit.net
 DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net
 DOMAIN-SUFFIX,openai.org
 DOMAIN-SUFFIX,segment.io
-DOMAIN-SUFFIX,sentry.io
 DOMAIN-SUFFIX,statsigapi.net
 DOMAIN-SUFFIX,stripe.com
 DOMAIN-SUFFIX,turn.livekit.cloud
+
+# Local additions - OpenAI
+# ChatGPT Web/Desktop, OpenAI API, Codex, SSO, static assets, files and diagnostics
+# https://help.openai.com/en/articles/9247338-network-recommendations-for-chatgpt-errors-on-web-and-apps
+# openai.com covers auth.openai.com and its subdomains. stripe.com covers js.stripe.com.
+DOMAIN,cdn.openaimerge.com
+
+# WorkOS sign-in, SSO setup and assets, Cloudflare challenge, and SendGrid email links
+# https://help.openai.com/en/articles/9247338-network-recommendations-for-chatgpt-errors-on-web-and-apps
+# Exclude upstream: DOMAIN-SUFFIX,workos.com
+# Exclude upstream: DOMAIN-KEYWORD,workos
+DOMAIN,cdn.workos.com
+DOMAIN,forwarder.workos.com
+DOMAIN,frontend-apps-multi-region.workos.com
+DOMAIN,images.workoscdn.com
+DOMAIN,setup.workos.com
+DOMAIN,workos.imgix.net
+DOMAIN,challenges.cloudflare.com
+DOMAIN-SUFFIX,ct.sendgrid.net
+
+# Apple hosts listed for ChatGPT connectivity and iOS App Attest diagnostics
+DOMAIN,humb.apple.com
+DOMAIN,register.appattest.apple.com
+
+# OpenAI Sentry projects and Datadog RUM intake
+# Exclude upstream: DOMAIN-SUFFIX,sentry.io
+# Exclude upstream: DOMAIN-SUFFIX,datadoghq.com
+# Exclude upstream: DOMAIN-KEYWORD,datadog
+DOMAIN,o207216.ingest.sentry.io
+DOMAIN,o33249.ingest.sentry.io
+DOMAIN,rum.browser-intake-datadoghq.com
+
+# Codex CLI install/update via npm, GitHub Releases fallback or Homebrew
+# chatgpt.com and openai.com cover the primary installer and binary host.
+# https://github.com/openai/codex#installing-and-running-codex-cli
+# https://formulae.brew.sh/cask/codex
+DOMAIN,registry.npmjs.org
+DOMAIN,github.com
+DOMAIN,api.github.com
+DOMAIN,release-assets.githubusercontent.com
+DOMAIN,formulae.brew.sh
+
+# Sora data export (sora.chatgpt.com), with sora.com retained from VPSDance
+# https://help.openai.com/en/articles/20001152-what-to-know-about-the-sora-discontinuation
+
+# Network - firewall and proxy requirements
+# ChatGPT wss://ws.chatgpt.com and Codex wss://chatgpt.com/ need WebSocket upgrade over TCP 443.
+# ChatGPT Voice prefers UDP 3478 to https://openai.com/chatgpt-voice.json destinations, with TCP 443 fallback.
+# The domain rules cover named endpoints. Allow the current Voice IPs and ports in the firewall separately.
+# https://help.openai.com/en/articles/9247338-network-recommendations-for-chatgpt-errors-on-web-and-apps
+# Connectors, Codex cloud and PSP egress ranges apply at receiving services.
+# https://developers.openai.com/api/docs/guides/ip-addresses

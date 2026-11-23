@@ -16,6 +16,9 @@ import time
 ROOT = Path(__file__).resolve().parent
 BLACKMATRIX = 'blackmatrix7/ios_rule_script'
 AI = 'VPSDance/ai-proxy-rules'
+AI_LOCAL = ROOT/'local-rules'
+AI_IP_TYPES = {'IP-CIDR', 'IP-CIDR6', 'IP-ASN'}
+EXCLUDE_UPSTREAM = '# Exclude upstream: '
 # These README links are known to be absent upstream. Report, never silently skip.
 MISSING = {'RemoteDesktop', 'ChemeQuations', 'Zoom'}
 FILENAMES = {'AdGuardSDNSFilter': 'AdGuardSDNSFilter_All.list',
@@ -87,18 +90,34 @@ def categories(readme):
 def rules(data):
     lines = [s.strip() for s in data.decode('utf-8-sig').splitlines()
              if s.strip() and not s.lstrip().startswith(('#', '//', ';'))]
-    if not lines or any(not re.match(r'(?:DOMAIN(?:-SUFFIX|-KEYWORD)?|IP-CIDR6?|IP-ASN|PROCESS-NAME|USER-AGENT|URL-REGEX|AND|OR|NOT),.+', s) for s in lines):
+    if not lines or any(not re.match(r'(?:DOMAIN(?:-SUFFIX|-KEYWORD|-WILDCARD)?|IP-CIDR6?|IP-ASN|PROCESS-NAME|USER-AGENT|URL-REGEX|AND|OR|NOT),.+', s) for s in lines):
         raise ValueError('Empty or unsupported rule content')
     return lines
 
 
-def add_anthropic_network(content):
-    rule = 'IP-CIDR,153.61.224.0/22,no-resolve'
-    if rule not in rules(content):
-        if not content.endswith(b'\n'):
-            content += b'\n'
-        content += b'\n# Local addition: Anthropic inbound IPv4\n' + rule.encode() + b'\n'
-    return content
+def merge_ai_rules(upstream, local):
+    upstream_rules = rules(upstream)
+    rules(local)
+    local_lines = local.decode('utf-8-sig').splitlines()
+    excluded = {line.removeprefix(EXCLUDE_UPSTREAM).strip() for line in local_lines
+                if line.startswith(EXCLUDE_UPSTREAM)}
+    # Only locally verified client destinations can supply active AI IP rules.
+    excluded.update(rule for rule in upstream_rules if rule.partition(',')[0] in AI_IP_TYPES)
+    seen = set()
+
+    def keep(lines, skipped=()):
+        for line in lines:
+            rule = line.strip()
+            if not rule or rule.startswith(('#', '//', ';')):
+                yield line
+            elif rule not in skipped and rule not in seen:
+                seen.add(rule)
+                yield line
+
+    upstream_text = '\n'.join(keep(upstream.decode('utf-8-sig').splitlines(), excluded))
+    upstream_text = re.sub(r'(?m)^# Network\n\n', '', upstream_text)
+    local_text = '\n'.join(keep(local_lines))
+    return (upstream_text.rstrip() + '\n\n' + local_text.rstrip() + '\n').encode()
 
 
 def main():
@@ -137,8 +156,7 @@ def main():
         outputs[name + '.list'] = (header + '\n'.join(entries) + '\n').encode()
     for name in ('OpenAI', 'Anthropic'):
         content = raw(AI, ai_sha, f'rules/surge/{name.lower()}.list')
-        rules(content)
-        outputs[name + '.list'] = add_anthropic_network(content) if name == 'Anthropic' else content
+        outputs[name + '.list'] = merge_ai_rules(content, (AI_LOCAL/f'{name}.list').read_bytes())
     # Only replace the directory after every download succeeds.
     dest = ROOT/'rules'
     with tempfile.TemporaryDirectory(prefix='.sync-', dir=ROOT) as td:

@@ -27,11 +27,6 @@ PROCESS-NAME,claude
 PROCESS-NAME,claude.exe
 PROCESS-NAME,cowork-svc.exe
 
-# Network
-IP-CIDR,160.79.104.0/21,no-resolve
-IP-CIDR6,2607:6bc0::/32,no-resolve
-IP-ASN,399358,no-resolve
-
 # Third-Party
 DOMAIN,anthropic-com.ghost.io
 DOMAIN,anthropic.auth0.com
@@ -56,9 +51,78 @@ DOMAIN-SUFFIX,muthos.com
 DOMAIN-SUFFIX,sentry.io
 DOMAIN-SUFFIX,sillylittleguy.org
 DOMAIN-SUFFIX,statsigapi.net
-DOMAIN-KEYWORD,datadog
 DOMAIN-KEYWORD,sentry
 DOMAIN-KEYWORD,sift
 
-# Local addition: Anthropic inbound IPv4
+# Local additions - Anthropic
+# Claude CLI, Web, Desktop, Cowork, Chrome bridge, Console, MCP and file/CDN hosts
+# https://code.claude.com/docs/en/network-config#network-access-requirements
+# https://code.claude.com/docs/en/desktop#network-access-requirements
+# https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls
+
+# Enterprise sign-in CAPTCHA, including dynamic hCaptcha hostnames
+# https://claude.com/docs/third-party/claude-desktop/admin-console-claude-code
+DOMAIN-SUFFIX,hcaptcha.com
+
+# Claude Code package registry, plugin marketplaces and release notes
+# https://code.claude.com/docs/en/network-config#network-access-requirements
+DOMAIN,registry.npmjs.org
+DOMAIN,github.com
+DOMAIN,raw.githubusercontent.com
+
+# Desktop Code tab Gerrit lookups for trusted googlesource.com repositories
+# https://code.claude.com/docs/en/network-config#network-access-requirements
+DOMAIN-WILDCARD,*-review.googlesource.com
+
+# Node.js and optional local MCP tooling: registry, uv, PyPI and GitHub packages/releases
+# https://code.claude.com/docs/en/mcp
+# https://github.com/modelcontextprotocol/registry
+# https://nodejs.org/en/download
+# https://docs.astral.sh/uv/getting-started/installation/
+# https://docs.github.com/en/actions/reference/runners/github-hosted-runners#communication-requirements-for-github-hosted-runners
+DOMAIN,nodejs.org
+DOMAIN,astral.sh
+DOMAIN,pypi.org
+DOMAIN,files.pythonhosted.org
+DOMAIN,api.github.com
+DOMAIN,codeload.github.com
+DOMAIN,release-assets.githubusercontent.com
+
+# Homebrew metadata, updates and optional dependency bottles
+# https://code.claude.com/docs/en/network-config#network-access-requirements
+# https://docs.brew.sh/Manpage
+# https://formulae.brew.sh/cask/claude-code
+DOMAIN,formulae.brew.sh
+DOMAIN,ghcr.io
+DOMAIN,pkg-containers.githubusercontent.com
+
+# Claude in Chrome extension download and updates
+# https://support.claude.com/en/articles/13065128-claude-in-chrome-admin-controls
+# https://support.google.com/chrome/a/answer/6334001#chrome_web_store
+DOMAIN,chromewebstore.google.com
+DOMAIN,clients2.googleusercontent.com
+DOMAIN,update.googleapis.com
+
+# Optional Artifact fonts and JavaScript libraries
+# https://code.claude.com/docs/en/network-config#third-party-hosts-for-artifact-fonts-and-libraries
+DOMAIN,fonts.googleapis.com
+DOMAIN,fonts.gstatic.com
+DOMAIN,cdnjs.cloudflare.com
+DOMAIN,cdn.jsdelivr.net
+DOMAIN,cdn.tailwindcss.com
+DOMAIN,code.jquery.com
+DOMAIN,unpkg.com
+
+# Claude Code operational telemetry and errors. The old keyword also matched other Datadog customers.
+# https://code.claude.com/docs/en/network-config#network-access-requirements
+# Exclude upstream: DOMAIN-KEYWORD,datadog
+# Exclude upstream: DOMAIN-SUFFIX,datadoghq.com
+DOMAIN,http-intake.logs.us5.datadoghq.com
+
+# Network - official inbound Claude API and Console destinations
+# https://platform.claude.com/docs/en/api/ip-addresses
+IP-CIDR,160.79.104.0/23,no-resolve
 IP-CIDR,153.61.224.0/22,no-resolve
+IP-CIDR6,2607:6bc0::/48,no-resolve
+# Anthropic outbound IPv4: 160.79.104.0/21, 153.61.208.0/20
+# For firewalls receiving Anthropic requests, such as remote MCP servers and GitHub Enterprise.
